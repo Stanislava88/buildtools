@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<project name="Hello World Project" default="compile">
+  <property file="built.properties"/>
+
+  <path id="libs">
+    <fileset dir="${lib.dir}">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement path="${build.dir}"/>
+  </path>
+
+  <target name="compile" description="compile java files">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.dir}/classes"/>
+    <mkdir dir="${build.dir}/test"/>
+
+
+    <javac destdir="${build.dir}/classes" source="1.8" target="1.8">
+      <src path="${src.dir}"/>
+      <classpath refid="libs"/>
+
+    </javac>
+    <javac destdir="${build.dir}/test" source="1.8" target="1.8">
+      <src path="${test.dir}"/>
+      <classpath path="${build.dir}/classes"/>
+      <classpath refid="libs"/>
+    </javac>
+    <copy todir="${build.dir}">
+      <fileset dir="src"
+               includes="**/*.xml"/>
+    </copy>
+  </target>
+
+  <target name="package" depends="compile">
+    <mkdir dir="prod"/>
+    <jar destfile="prod/FatApp.jar"
+         basedir="${build.dir}/classes"
+         includes="com/**,*.xml">
+      <manifest>
+        <attribute name="Main-Class" value="com.clouway.build.tools.Demo"/>
+      </manifest>
+      <zipgroupfileset dir="${lib.dir}" includes="**/*.jar" excludes="**/junit*,**/hamcrest*,**/jarjar*"/>
+    </jar>
+  </target>
+
+  <target name="jarjar" depends="compile">
+    <mkdir dir="prod/jarJar"/>
+    <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="lib/jarjar-1.4.jar"/>
+    <jarjar jarfile="prod/JarJar.jar">
+      <fileset dir="${build.dir}/classes" includes="com/**,log4j2.xml"/>
+      <zipfileset src="lib/log4j-api-2.51.jar"/>
+      <zipfileset src="lib/log4j-core-2.51.jar"/>
+      <rule pattern="org.apache.**" result="com.clouway.internal.@1"/>
+      <manifest>
+        <attribute name="Main-Class" value="com.clouway.build.tools.Demo"/>
+      </manifest>
+
+    </jarjar>
+  </target>
+
+
+  <target name="unittest" depends="compile">
+    <junit fork="yes" haltonfailure="true" printsummary="true">
+      <classpath refid="libs"/>
+      <test name="com.clouway.build.tools.PersonTest"/>
+    </junit>
+  </target>
+
+  <target name="clean" description="clean java classes">
+    <delete>
+      <fileset dir="${build.dir}">
+        <include name="**/*.class"/>
+      </fileset>
+
+    </delete>
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="cleanJarFiles" depends="package">
+    <delete>
+      <fileset dir="prod">
+        <include name="**/*.jar"/>
+      </fileset>
+    </delete>
+    <delete dir="prod"/>
+  </target>
+
+  <target name="generate-javadoc">
+    <javadoc packagenames="com.*" sourcepath="${src.dir}"
+             destdir="doc" version="true" windowtitle="Fat Application">
+
+      <doctitle><![CDATA[= Fat Application =]]></doctitle>
+
+      <bottom>
+        <![CDATA[Copyright © 2016. All Rights Reserved.]]>
+      </bottom>
+
+      <group title="util packages" packages="com.*"/>
+    </javadoc>
+
+    <echo message="java doc has been generated!"/>
+  </target>
+
+
+  <target name="execute">
+    <java fork="true" failonerror="yes" dir="${build.dir}" classpathref="libs"
+          classname="com/clouway/build/tools/Demo"/>
+  </target>
+
+  <target name="executeJar">
+    <java fork="true" failonerror="yes" dir="prod" jar="prod/FatApp.jar"/>
+  </target>
+
+</project>
