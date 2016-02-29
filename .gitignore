@@ -1,5 +1,9 @@
 *.class
+out/
+src/com/clouway/practice/
 
+.idea/
+*.iml
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
