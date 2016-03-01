@@ -1,0 +1,81 @@
+<project>
+    <property name="project.name" value="ant"/>
+    <property name="main_class_name" value="Main-Class"/>
+    <property name="jarname" value="${ant.project.name}"/>
+
+    <property name="src" location="src"/>
+    <property name="tests" location="tests"/>
+    <property name="build" location="target"/>
+    <property name="lib" location="lib"/>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${build}"/>
+        <mkdir dir="jar"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="jar"/>
+        <delete dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac destdir="${build}">
+            <src path="${src}"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <target name="compiletests" depends="init">
+        <javac destdir="${build}">
+            <src path="${tests}"/>
+            <classpath refid="build.classpath"/>
+        </javac>
+    </target>
+
+    <path id="build.classpath">
+        <fileset dir="lib">
+            <include name="**/*.jar" />
+            <exclude name="**/jarjar-1.4.jar"/>
+        </fileset>
+    </path>
+
+    <pathconvert property="mf.classpath" pathsep=" ">
+        <path refid="build.classpath"/>
+        <flattenmapper/>
+    </pathconvert>
+
+    <target name="jarjarpackage" depends="compile">
+        <copy todir="${build}" includeemptydirs="false">
+            <fileset dir="" includes="**/*.properties" excludes="out/"/>
+        </copy>
+        <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask"
+                 classpath="lib/jarjar-1.4.jar"/>
+        <jarjar jarfile="${build}/MyProject.jar">
+            <fileset dir="${build}"/>
+            <zipgroupfileset dir="lib" includes="*.jar" excludes="jarjar-1.4.jar"/>
+            <manifest>
+                <attribute name="Class-Path" value="${mf.classpath}"/>
+                <attribute name="${main_class_name}" value="com.clouway.MyProject"/>
+            </manifest>
+        </jarjar>
+    </target>
+
+    <target name="jarpackage" depends="compile">
+        <copy todir="${build}" includeemptydirs="false">
+            <fileset dir="" includes="**/*.properties" excludes="out/"/>
+        </copy>
+        <jar destfile="${build}/MyProject.jar" basedir="${build}">
+            <zipgroupfileset dir="lib" includes="*.jar" excludes="jarjar-1.4.jar"/>
+            <manifest>
+                <attribute name="Class-Path" value="${mf.classpath}"/>
+                <attribute name="${main_class_name}" value="com.clouway.MyProject"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run">
+        <java jar="${build}/MyProject.jar" fork="true"/>
+    </target>
+
+
+</project>

@@ -1,7 +1,7 @@
 *.class
 out/
-src/com/clouway/practice/
-
+practice/
+ant/lib
 .idea/
 *.iml
 # Mobile Tools for Java (J2ME)
