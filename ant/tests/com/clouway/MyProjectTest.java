@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class MyProjectTest {
     @Test
-    public void probaTest() {
+    public void dummyTestUsingJmockLib() {
        assertEquals(2,2);
     }
 }

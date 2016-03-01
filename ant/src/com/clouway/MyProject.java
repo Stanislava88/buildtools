@@ -1,7 +1,6 @@
 package com.clouway;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  * @author Slavi Dichkov (slavidichkof@gmail.com)
