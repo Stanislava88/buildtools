@@ -1,12 +1,13 @@
 <project>
     <property name="project.name" value="ant"/>
     <property name="main_class_name" value="Main-Class"/>
-    <property name="jarname" value="${ant.project.name}"/>
+    <property name="jarname" value="myproject"/>
 
     <property name="src" location="src"/>
     <property name="tests" location="tests"/>
     <property name="build" location="target"/>
     <property name="lib" location="lib"/>
+    <property name="out" location="out/"/>
 
     <target name="init" depends="clean">
         <mkdir dir="${build}"/>
@@ -46,11 +47,11 @@
 
     <target name="jarjarpackage" depends="compile">
         <copy todir="${build}" includeemptydirs="false">
-            <fileset dir="" includes="**/*.properties" excludes="out/"/>
+            <fileset dir="" includes="**/*.properties" excludes="${out}"/>
         </copy>
         <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask"
                  classpath="lib/jarjar-1.4.jar"/>
-        <jarjar jarfile="${build}/MyProject.jar">
+        <jarjar jarfile="${build}/${jarname}.jar">
             <fileset dir="${build}"/>
             <zipgroupfileset dir="lib" includes="*.jar" excludes="jarjar-1.4.jar"/>
             <manifest>
@@ -62,9 +63,9 @@
 
     <target name="jarpackage" depends="compile">
         <copy todir="${build}" includeemptydirs="false">
-            <fileset dir="" includes="**/*.properties" excludes="out/"/>
+            <fileset dir="" includes="**/*.properties" excludes="${out}"/>
         </copy>
-        <jar destfile="${build}/MyProject.jar" basedir="${build}">
+        <jar destfile="${build}/${jarname}.jar" basedir="${build}">
             <zipgroupfileset dir="lib" includes="*.jar" excludes="jarjar-1.4.jar"/>
             <manifest>
                 <attribute name="Class-Path" value="${mf.classpath}"/>
@@ -74,7 +75,7 @@
     </target>
 
     <target name="run">
-        <java jar="${build}/MyProject.jar" fork="true"/>
+        <java jar="${build}/${jarname}.jar" fork="true"/>
     </target>
 
 
