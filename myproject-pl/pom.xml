@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.clouway</groupId>
+    <artifactId>buildtools</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>com.clouway</groupId>
+  <artifactId>myproject-pl</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.clouway.build.tools.PersistentLayer</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>jarjar-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jarjar</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**</include>
+              </includes>
+              <rules>
+                <keep>
+                  <pattern>com.clouway.build.tools.**</pattern>
+                </keep>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.4.1208.jre7</version>
+    </dependency>
+
+  </dependencies>
+
+</project>
