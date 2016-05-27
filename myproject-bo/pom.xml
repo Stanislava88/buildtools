@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.clouway</groupId>
+  <artifactId>myproject-bo</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <name>myproject-bo</name>
+  <url>http://maven.apache.org</url>
+
+  <parent>
+    <groupId>buildtools</groupId>
+    <artifactId>root</artifactId>
+    <version>1.0</version>
+  </parent>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.clouway.Demo</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+
+    <!--jdbc driver-->
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>oracle</artifactId>
+      <version>10.2.0.2.0</version>
+    </dependency>
+
+  </dependencies>
+
+</project>
