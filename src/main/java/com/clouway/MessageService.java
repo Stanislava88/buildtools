@@ -1,13 +1,11 @@
 package com.clouway;
 
 
-
 /**
  * @author Stanislava Kaukova(sisiivanovva@gmail.com)
  */
-public class Greeter {
-
-  public String sayHello(String msg) {
+public class MessageService {
+  public String getMessage(String msg) {
     return msg;
   }
 }
