@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>buildtools</groupId>
+  <artifactId>root</artifactId>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>myproject</module>
+    <module>myproject-pl</module>
+    <module>myproject-bo</module>
+    <module>myproject-bl</module>
+  </modules>
+
+  <dependencies>
+
+    <!--test-->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!--log-->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+
+    <!--local lib-->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava-parent</artifactId>
+      <version>19.0</version>
+      <scope>system</scope>
+      <systemPath>/home/clouway/workspace/idea/buildtools/lib/guava-19.0.jar</systemPath>
+    </dependency>
+
+  </dependencies>
+</project>
